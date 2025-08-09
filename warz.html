@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Black Warz Pikacu</title>
+    <style>
+        /* Reset & Base */
+        *{margin:0;padding:0;box-sizing:border-box}
+        html,body{height:100%}
+        body{
+            background:#0a0a0a;
+            color:#0f0;
+            font-family:'Courier New',monospace;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content: center; /* Center content vertically */
+            padding:20px;
+            overflow-x:hidden;
+            background-image:
+                radial-gradient(circle at 20% 20%,#0f02 1px,transparent 1px),
+                radial-gradient(circle at 80% 80%,#0f02 1px,transparent 1px);
+            background-size:40px 40px;
+            line-height:1.4;
+        }
+
+        /* Header */
+        .header{
+            margin-top:20px; /* Reduced top margin */
+            margin-bottom: 20px; /* Added bottom margin */
+            text-align:center;
+            animation:glitch 2.5s infinite steps(1);
+        }
+        .header h1{
+            font-size:min(48px,10vw);
+            letter-spacing:2px;
+            position:relative;
+            color:#0f0;
+        }
+        .header h1::before,
+        .header h1::after{
+            content:"TEXS BAND";
+            position:absolute;
+            left:0;
+            width:100%;
+            text-align:center;
+            pointer-events:none;
+        }
+        .header h1::before{
+            top:-1px;
+            clip-path:polygon(0 0,100% 0,100% 45%,0 45%);
+            color:#f0f;
+            animation:glitchTop .3s infinite;
+        }
+        .header h1::after{
+            top:1px;
+            clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);
+            color:#0ff;
+            animation:glitchBot .3s infinite;
+        }
+
+        /* ASCII */
+        .ascii{
+            white-space:pre;
+            font-size:min(14px,3vw);
+            margin:15px 0;
+            text-shadow:0 0 5px #0f0;
+            animation:scanline 3s linear infinite;
+            max-width:100%;
+            overflow-x:auto;
+        }
+
+        /* Key Section */
+        .key-section{
+            margin:20px 0;
+            text-align:center;
+        }
+        input[type="password"]{
+            padding:12px 18px;
+            font-size:18px;
+            border:2px solid #0f0;
+            border-radius:0;
+            background:#000;
+            color:#0f0;
+            outline:none;
+            text-align:center;
+            width:160px;
+            max-width:90%;
+        }
+        button{
+            padding:12px 30px;
+            margin-top:10px;
+            font-size:18px;
+            background:#0f0;
+            color:#000;
+            border:none;
+            cursor:pointer;
+            clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+            transition:transform .2s;
+        }
+        button:active{transform:scale(.95)}
+        .hidden{display:none}
+
+        /* Tabs */
+        .tabs{
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:8px;
+            margin:20px 0;
+            width:100%;
+            max-width:800px;
+        }
+        .tab-btn{
+            padding:10px 0;
+            flex:1 1 80px;
+            max-width:120px;
+            font-size:15px;
+            background:#111;
+            color:#0f0;
+            border:1px solid #0f0;
+            cursor:pointer;
+            text-align:center;
+            transition:background .3s,color .3s;
+        }
+        .tab-btn:hover,
+        .tab-btn:focus{
+            background:#0f0;
+            color:#000;
+        }
+
+        /* Content */
+        .tab-content{
+            display:none;
+            background:#111;
+            border:1px solid #0f0;
+            width:100%;
+            max-width:800px;
+            margin:20px 0;
+            padding:15px;
+            animation:slide .5s ease;
+            box-shadow:0 0 10px #0f0;
+            overflow-wrap:break-word;
+            font-size:14px;
+        }
+        .tab-content.active{display:block}
+        .copy-btn{
+            margin-top:15px;
+            padding:8px 20px;
+            background:#0f0;
+            color:#000;
+            border:none;
+            cursor:pointer;
+            clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+        }
+
+        /* Animations */
+        @keyframes glitchTop{
+            0%{transform:translate(2px,-2px)}
+            25%{transform:translate(-2px,2px)}
+            50%{transform:translate(0,0)}
+            75%{transform:translate(2px,2px)}
+            100%{transform:translate(-2px,-2px)}
+        }
+        @keyframes glitchBot{
+            0%{transform:translate(-2px,2px)}
+            25%{transform:translate(2px,-2px)}
+            50%{transform:translate(0,0)}
+            75%{transform:translate(-2px,-2px)}
+            100%{transform:translate(2px,2px)}
+        }
+        @keyframes scanline{
+            0%{opacity:0.3}
+            50%{opacity:1}
+            100%{opacity:0.3}
+        }
+        @keyframes slide{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+        /* Main Content Wrapper */
+        #mainContent {
+            display: none; /* Initially hidden */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ASCII Art (Visible on login page) -->
+<div class="ascii">
+⢰⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀
+⠀⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣾⣿⠀
+⠀⠘⢿⣿⣿⣿⣿⣦⣀⣀⣀⣄⣀⣀⣠⣀⣤⣶⣿⣿⣿⣿⣿⠇⠀
+⠀⠀⠈⠻⣿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀
+⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⠋⠀⠀⠀⠀
+⠀⠀⠀⢠⣿⣿⡏⠆⢹⣿⣿⣿⣿⣿⣿⠒⠈⣿⣿⣿⣇⠀⠀⠀⠀
+⠀⠀⠀⣼⣿⣿⣷⣶⣿⣿⣛⣻⣿⣿⣿⣶⣾⣿⣿⣿⣿⡀⠀⠀⠀
+⠀⠀⠀⡁⠀⠈⣿⣿⣿⣿⢟⣛⡻⣿⣿⣿⣟⠀⠀⠈⣿⡇⠀⠀⠀
+⠀⠀⠀⢿⣶⣿⣿⣿⣿⣿⡻⣿⡿⣿⣿⣿⣿⣶⣶⣾⣿⣿⠀⠀⠀
+⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀
+⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀
+</div>
+
+<div style="font-size:min(24px,6vw);margin-bottom:20px;text-shadow:0 0 8px #0f0;">
+    𝙱𝚕𝚊𝚌𝚔 𝚆𝚊𝚛𝚣 𝙱𝚊𝚗𝚍 𝙿𝚒𝚔𝚊𝚌𝚞
+</div>
+
+<!-- Key Section (Login Page) -->
+<div class="key-section" id="keySection">
+    <input type="password" id="keyInput" placeholder="11211">
+    <br><br>
+    <button onclick="checkKey()">ENTER</button>
+</div>
+
+<!-- Main Content Wrapper (Hidden by default) -->
+<div id="mainContent" class="hidden">
+    <!-- Tabs -->
+    <div class="tabs" id="tabs">
+        <button class="tab-btn" onclick="showTab('v1')">V1</button>
+        <button class="tab-btn" onclick="showTab('v2')">V2</button>
+        <button class="tab-btn" onclick="showTab('v3')">V3</button>
+        <button class="tab-btn" onclick="showTab('v4')">V4</button>
+        <button class="tab-btn" onclick="showTab('v5')">V5</button>
+        <button class="tab-btn" onclick="showTab('sepam')">Sepam</button>
+    </div>
+
+    <!-- Content Boxes -->
+    <div id="v1" class="tab-content">
+        <strong>TEXS BANED V1</strong><br>
+        👋 Hola, soy Repix Gredoro...<br>
+        <button class="copy-btn" onclick="copyText('v1')">Salin</button>
+    </div>
+    <div id="v2" class="tab-content">
+        <strong>TEXS BANED V2</strong><br>
+        🎰KILAT69...<br>
+        <button class="copy-btn" onclick="copyText('v2')">Salin</button>
+    </div>
+    <div id="v3" class="tab-content">
+        <strong>TEXS BANED V3</strong><br>
+        🎰💵 VOCÊ ESTÁ PRONTO...<br>
+        <button class="copy-btn" onclick="copyText('v3')">Salin</button>
+    </div>
+    <div id="v4" class="tab-content">
+        <strong>TEXS BANED V4</strong><br>
+        🎰💵 VOCÊ ESTÁ PRONTO...<br>
+        <button class="copy-btn" onclick="copyText('v4')">Salin</button>
+    </div>
+    <div id="v5" class="tab-content">
+        <strong>TEXS BANED V5</strong><br>
+        WhatsAppユーザーの皆さん...<br>
+        <button class="copy-btn" onclick="copyText('v5')">Salin</button>
+    </div>
+    <div id="sepam" class="tab-content">
+        <strong>Texa Sepam</strong><br>
+        Por favor, desative o número...<br>
+        <button class="copy-btn" onclick="copyText('sepam')">Salin</button>
+    </div>
+</div>
+
+<script>
+    const texts = {
+        v1:`👋 Hola, soy Repix Gredoro, y a mis dos amigos, Mark Zuckerberg 😊 y Alexandar Wang 😆, les ofrecemos nuestro sitio oficial de tragamonedas y a Mark y Alexandar 🎰, nuestro sitio oficial y Mark Zuckerberg, TOTO12 🤑. Juega a Toto12 y obtén un 99% de posibilidades de ganar 👿, incluso hasta 899 rupias 💀🥶
+
+Deposita en nuestro sitio y recibe dinero automáticamente al 99% 🤑🤑
+
+💸 $15 CONVIERTE $760 🤤💸
+💸 $40 CONVIERTE $981 🤤💸
+💸 $96 CONVIERTE $89,987 🤤💸
+
+✨Regístrate abajo para jugar y obtener beneficios. ¡Satisfactorio! 🤑
+🎰 TOTO 12 🀄🃏
+https://www.google.com/amp/s/miliksaya.info/vitamins/  
+
+🤩 ¡Haz un depósito en nuestra página ahora y gana todo el dinero que puedas! 🎰 🀄
+
+‼️ Juega con tranquilidad 😏. Si pierdes y no recibes el dinero prometido, Mark Zuckerberg y yo te reembolsaremos el doble 🔥`,
+        v2:`🎰KILAT69: ეს არის საიტი, რომელიც შექმნილია ყველასთვის, რათა განიცადოს გამარჯვება. ჩვენ ეს საიტი შევქმენით 2024 და 2025 წლებში და წელს გავუშვით ჩვენი საიტი ინდონეზიაში🇮🇩 ჩვენ ძალიან ვამაყობთ ჩვენი ძალისხმევით. რადგან ჩვენი საიტი ოფიციალურად გაიხსნა ინდონეზიაში, ჩვენს საიტზე თამაში საკმაოდ მარტივია. უბრალოდ დარეგისტრირდით და შეიტანეთ მინიმალური დეპოზიტი 30,000, გარანტირებულია მაქსიმალური მოგების მიღება, რადგან ჩვენი საიტი ძალიან კარგია. ჩვენ თვითონ გამოვცადეთ ეს. ჩვენს საიტზე სათამაშოდ, რეგისტრაციის ბმული აქ არის👇
+https://kilat69swiss.com/register  `,
+        v3:`🎰💵 VOCÊ ESTÁ PRONTO PARA FICAR RICO?
+
+💥 SLOT MAIS GACOR DO BRASIL ESTÁ AO VIVO AGORA!
+🤑 DEPOSITE R$10 E GANHE R$1.000 EM MENOS DE 10 MINUTOS!
+🎯 100% GARANTIDO — COMPROVADO POR MILHARES!
+
+🔥 JOGOS MAIS EXPLOSIVOS:
+• GATES OF OLYMPUS ⚡
+• SWEET BONANZA 🍭
+• STAKE GOLD 🏆
+
+💰 RODADAS GRÁTIS AO CADASTRAR!
+🧨 PAGAMENTO EM 1 MINUTO — PIX, BOLETO, CRIPTO DISPONÍVEL
+
+👉 CLIQUE AGORA: https://bw188meranti.xyz   👈
+
+📞 SUPORTE 24H | SAQUE NA HORA | SEM DOCUMENTO
+
+❌ SE VOCÊ NÃO JOGAR HOJE, ALGUÉM VAI GANHAR NO SEU LUGAR!
+
+Eu sou DrayMods, como administrador do site BETWIN188👨‍💻🔥 vou ajudar você a ganhar no site BETWIN188🔥🤑`,
+        v4:`🎰💵 VOCÊ ESTÁ PRONTO PARA FICAR RICO?
+
+💥 SLOT MAIS GACOR DO BRASIL ESTÁ AO VIVO AGORA!
+🤑 DEPOSITE R$10 E GANHE R$1.000 EM MENOS DE 10 MINUTOS!
+🎯 100% GARANTIDO — COMPROVADO POR MILHARES!
+
+🔥 JOGOS MAIS EXPLOSIVOS:
+• GATES OF OLYMPUS ⚡
+• SWEET BONANZA 🍭
+• STAKE GOLD 🏆
+
+💰 RODADAS GRÁTIS AO CADASTRAR!
+🧨 PAGAMENTO EM 1 MINUTO — PIX, BOLETO, CRIPTO DISPONÍVEL
+
+👉 CLIQUE AGORA: https://bw188meranti.xyz   👈
+
+📞 SUPORTE 24H | SAQUE NA HORA | SEM DOCUMENTO
+
+❌ SE VOCÊ NÃO JOGAR HOJE, ALGUÉM VAI GANHAR NO SEU LUGAR!
+
+Eu sou DrayMods, como administrador do site BETWIN188👨‍💻🔥 vou ajudar você a ganhar no site BETWIN188🔥🤑`,
+        v5:`WhatsAppユーザーの皆さん、こんにちは。Anggaです。セックスビデオの1つを宣伝したいと思います🤤自動クロット保証🤤🤤。また、12〜18歳の子供を性奴隷として訓練するための売買も受け付けています🤤🤤🌈。非常に優れた性奴隷の恩恵を感じたい場合🤤🔥、当社のエスクラボスを購入したい場合は、下記からご連絡いただければ、50ドルでエスクラボスをお楽しみいただけます。当店のエスコートは6人から10人ほどの子供を扱っています🤑🤑💸
+
+WhatsApp@gmail.com 当サイトには幼い子供の性的な動画が多数掲載されており、プレミアム奴隷の魅力をご覧いただけます💯🔥🔥🤤 おすすめの動画の一例をご紹介します https://www.kapwing.com/videos/6894d0cb7d1b5d2394e291ed  🤤🌈 ご連絡ください、愛しています😈💸
+
+https://web.whatsapp.com/telefone/send?number=+62  `,
+        sepam:`Por favor, desative o número da minha conta (). O meu número de WhatsApp foi banido. Por favor, ative-o novamente. O meu número pessoal. Os meus amigos e familiares estão à minha espera. A minha conta comercial está muito chateada. Por favor, Sr. Assim que o meu número for aberto, ficarei muito grato. Se tiver algum erro, peço desculpa.
+
+O meu número de WhatsApp está 🙏 imediatamente porque o número foi perdido.`
+    };
+
+    function checkKey() {
+        const key = document.getElementById('keyInput').value;
+        if (key === "11211") {
+            document.getElementById('keySection').classList.add('hidden');
+            document.getElementById('mainContent').style.display = 'flex'; // Show the main content
+            document.body.style.justifyContent = 'flex-start'; // Reset body alignment for main content
+            showTab('v1'); // Show the first tab (V1) by default
+        } else {
+            alert("Key salah! Coba lagi.");
+        }
+    }
+
+    function showTab(tabId) {
+        const contents = document.querySelectorAll('.tab-content');
+        contents.forEach(c => c.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    function copyText(key) {
+        navigator.clipboard.writeText(texts[key]).then(() => {
+            alert("Teks berhasil disalin!");
+        });
+    }
+</script>
+
+</body>
+</html>
